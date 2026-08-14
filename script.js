@@ -72,3 +72,37 @@ document
       ${period === "weekly" ? "per week" : "per month"}.
     `;
   });
+
+// Define a function that calculates how many weeks it takes to reach a savings goal
+function calculateWeeksToGoal() {
+  // Get the savings goal input element from the page using its id attribute
+  const goalInput = document.getElementById('goal');
+  // Get the weekly savings input element from the page using its id attribute
+  const weeklyInput = document.getElementById('weekly');
+  // Get the result output div from the page using its id attribute
+  const resultDiv = document.getElementById('result');
+  // Read the goal value from the input field and convert it to a number
+  const goal = parseFloat(goalInput.value);
+  // Read the weekly savings value from the input field and convert it to a number
+  const weekly = parseFloat(weeklyInput.value);
+  // Check whether either value is missing, not a number, or invalid for calculation
+  if (isNaN(goal) || isNaN(weekly) || goal <= 0 || weekly <= 0) {
+    // Display a helpful error message when the user enters invalid numbers
+    resultDiv.textContent = 'Please enter a valid savings goal and a weekly amount greater than zero.';
+    // Exit the function early because we cannot calculate with bad input
+    return;
+  }
+  // Divide the goal by the weekly savings amount to find weeks needed
+  const weeks = Math.ceil(goal / weekly);
+  // Choose the correct singular or plural word for "week" based on the result
+  const weekWord = weeks === 1 ? 'week' : 'weeks';
+  // Build a plain-language sentence that tells the user how long saving will take
+  const message = `It will take you ${weeks} ${weekWord} to reach your savings goal of $${goal.toFixed(2)} if you save $${weekly.toFixed(2)} each week.`;
+  // Write the message into the result div so the user can read it on the page
+  resultDiv.textContent = message;
+}
+
+// Get the calculate button element from the page using its id attribute
+const calculateButton = document.getElementById('calculate');
+// Attach a click listener so the calculation runs when the user presses the button
+calculateButton.addEventListener('click', calculateWeeksToGoal);
