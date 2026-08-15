@@ -27,7 +27,16 @@ DOCTYPE html>
         <input type="number" id="salary-input" placeholder="e.g. 5000" min="0">
           <button type="submit" id="salary-btn">Submit</button>
         </div>
+        <div class="savings-container">
+          <label for="goal">Savings goal ($)</label>
+          <input type="number" id="goal" placeholder="e.g. 1000" min="0">
+          <label for="weekly">Weekly savings ($)</label>
+          <input type="number" id="weekly" placeholder="e.g. 100" min="0">
+          <button type="button" id="calculate">Calculate</button>
+          <div id="result"></div>
+        </div>
       </section>
     </main>
+    <script src="script.js"></script>
   </body>
 </html>
