@@ -1,3 +1,4 @@
+
 // Wait until the entire HTML page has finished loading
 document.addEventListener('DOMContentLoaded', function () {
   // Find the button that triggers the savings calculation
@@ -72,6 +73,7 @@ document
       ${period === "weekly" ? "per week" : "per month"}.
     `;
   });
+<<<<<<< HEAD
 
 // Define a function that calculates how many weeks it takes to reach a savings goal
 function calculateWeeksToGoal() {
@@ -106,3 +108,5 @@ function calculateWeeksToGoal() {
 const calculateButton = document.getElementById('calculate');
 // Attach a click listener so the calculation runs when the user presses the button
 calculateButton.addEventListener('click', calculateWeeksToGoal);
+=======
+>>>>>>> 9cbd4e9 (First presentation)
