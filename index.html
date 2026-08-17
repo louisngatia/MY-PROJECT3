@@ -1,77 +1,128 @@
-
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SaveSmarter</title>
-    <link rel="stylesheet" href="styles.css">
-  </head>
-  <body>
-    <header>
-      <h1>My Financial Path</h1>
-      <p class="problem-statement">70 out of 10 young adults, women, and underserved groups lack the basic knowledge to budget, save, or understand 
-        credit — a gap that personal finance education in schools has failed to close. The gap is measurable and gendered: men answered 53% of financial literacy questions 
-        correctly in 2025, versus 45% for women, per the TIAA Institute-GFLEC Personal Finance Index. The consequences fall hardest on those with the least knowledge — adults with very low financial literacy
-         are twice as likely to be debt-constrained and three times more likely to be financially fragile.</p>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Savings Calculator and Budget Planner</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main class="container">
+
+    <header class="page-header">
+      <h1>Savings Calculator</h1>
+
+      <p class="intro-text">
+        Plan your budget and find out how quickly you can reach your savings
+        target.
+      </p>
     </header>
-    <main>
-      <section id="evidence">
-        <h2>Why this matters</h2>
-        <p>In every group of five one young person is financially illterate and yet most of them do not go for financial training
-          but they opt to take loans to solve problems.</p>
-      </section>
-      <section id="feature">
-        <h2>The tool</h2>
-<<<<<<< HEAD
-        <div class="savings-container">
-          <label for="goal">Savings goal ($)</label>
-          <input type="number" id="goal" placeholder="e.g. 1000" min="0">
-          <label for="weekly">Weekly savings ($)</label>
-          <input type="number" id="weekly" placeholder="e.g. 100" min="0">
-          <button type="button" id="calculate">Calculate</button>
-          <div id="result"></div>
+
+    <!-- BUDGET PLANNER -->
+    <section class="calculator-card">
+      <h2>Budget Planner</h2>
+
+      <p class="small-text">
+        Enter your salary and the percentage you want to save. These values
+        will also be used by the savings calculator.
+      </p>
+
+      <form id="budgetForm">
+
+        <div class="input-group">
+          <label for="salary">Salary</label>
+
+          <input
+            type="number"
+            id="salary"
+            placeholder="Enter your salary"
+            min="1"
+            required
+          >
         </div>
-=======
->>>>>>> 42b90c8 (title update)
-        <div class="savings-container">
-          <label for="goal">Savings goal ($)</label>
-          <input type="number" id="goal" placeholder="e.g. 1000" min="0">
-          <label for="weekly">Weekly savings ($)</label>
-          <input type="number" id="weekly" placeholder="e.g. 100" min="0">
-          <button type="button" id="calculate">Calculate</button>
-          <div id="result"></div>
+
+        <div class="input-group">
+          <label for="salaryPeriod">Salary period</label>
+
+          <select id="salaryPeriod" required>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+          </select>
         </div>
-      </section>
-      <section class="salary-calculator">
-        <h2>Weekly or Monthly Salary Planner</h2>
-      
-        <input
-          type="number"
-          id="salary"
-          placeholder="Enter your salary"
-          min="0"
-        />
-      
-        <select id="salaryPeriod">
-          <option value="weekly">Weekly salary</option>
-          <option value="monthly">Monthly salary</option>
-        </select>
-      
-        <input
-          type="number"
-          id="savingPercentage"
-          placeholder="Savings percentage"
-          min="0"
-          max="100"
-          value="20"
-        />
-      
-        <button id="calculateSalary">Calculate</button>
-      
-        <p id="salaryResult"></p>
-      </section>
-    </main>
-    <script src="script.js"></script>
-  </body>
+
+        <div class="input-group">
+          <label for="savingPercentage">Savings percentage</label>
+
+          <input
+            type="number"
+            id="savingPercentage"
+            placeholder="For example, 20"
+            min="0"
+            max="100"
+            value="20"
+            required
+          >
+        </div>
+
+        <button type="submit">
+          Calculate budget
+        </button>
+
+      </form>
+
+      <div id="budgetResult" class="result hidden"></div>
+    </section>
+
+    <!-- SAVINGS CALCULATOR -->
+    <section class="calculator-card">
+      <h2>Savings Target Calculator</h2>
+
+      <p class="small-text">
+        Enter your target. The weekly savings amount will automatically match
+        the amount calculated in the budget planner.
+      </p>
+
+      <form id="savingsForm">
+
+        <div class="input-group">
+          <label for="savingsTarget">Savings target</label>
+
+          <input
+            type="number"
+            id="savingsTarget"
+            placeholder="For example, 50000"
+            min="1"
+            required
+          >
+        </div>
+
+        <div class="input-group">
+          <label for="weeklySavings">Weekly savings</label>
+
+          <input
+            type="number"
+            id="weeklySavings"
+            placeholder="Calculate your budget first"
+            min="1"
+            readonly
+            required
+          >
+        </div>
+
+        <button type="submit">
+          Calculate savings time
+        </button>
+
+      </form>
+
+      <div id="savingsResult" class="result hidden"></div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
 </html>
