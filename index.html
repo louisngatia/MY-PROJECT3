@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+<DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -8,7 +9,7 @@
   </head>
   <body>
     <header>
-      <h1>My Financial Path</h1>
+      <h1>Project title:Will update this later</h1>
       <p class="problem-statement">70 out of 10 young adults, women, and underserved groups lack the basic knowledge to budget, save, or understand 
         credit — a gap that personal finance education in schools has failed to close. The gap is measurable and gendered: men answered 53% of financial literacy questions 
         correctly in 2025, versus 45% for women, per the TIAA Institute-GFLEC Personal Finance Index. The consequences fall hardest on those with the least knowledge — adults with very low financial literacy
@@ -22,6 +23,14 @@
       </section>
       <section id="feature">
         <h2>The tool</h2>
+        <div class="savings-container">
+          <label for="goal">Savings goal ($)</label>
+          <input type="number" id="goal" placeholder="e.g. 1000" min="0">
+          <label for="weekly">Weekly savings ($)</label>
+          <input type="number" id="weekly" placeholder="e.g. 100" min="0">
+          <button type="button" id="calculate">Calculate</button>
+          <div id="result"></div>
+        </div>
         <div class="savings-container">
           <label for="goal">Savings goal ($)</label>
           <input type="number" id="goal" placeholder="e.g. 1000" min="0">
