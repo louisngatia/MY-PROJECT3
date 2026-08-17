@@ -31,6 +31,34 @@
           <div id="result"></div>
         </div>
       </section>
+      <section class="salary-calculator">
+        <h2>Weekly or Monthly Salary Planner</h2>
+      
+        <input
+          type="number"
+          id="salary"
+          placeholder="Enter your salary"
+          min="0"
+        />
+      
+        <select id="salaryPeriod">
+          <option value="weekly">Weekly salary</option>
+          <option value="monthly">Monthly salary</option>
+        </select>
+      
+        <input
+          type="number"
+          id="savingPercentage"
+          placeholder="Savings percentage"
+          min="0"
+          max="100"
+          value="20"
+        />
+      
+        <button id="calculateSalary">Calculate</button>
+      
+        <p id="salaryResult"></p>
+      </section>
     </main>
     <script src="script.js"></script>
   </body>

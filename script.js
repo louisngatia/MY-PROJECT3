@@ -41,3 +41,34 @@ function calculateWeeksToGoal() {
   // Display the message inside the result div on the page
   resultDiv.textContent = message;
 }
+document
+  .getElementById("calculateSalary")
+  .addEventListener("click", function () {
+    const salary = Number(document.getElementById("salary").value);
+    const period = document.getElementById("salaryPeriod").value;
+    const savingPercentage = Number(
+      document.getElementById("savingPercentage").value
+    );
+
+    const result = document.getElementById("salaryResult");
+
+    if (
+      salary <= 0 ||
+      savingPercentage < 0 ||
+      savingPercentage > 100
+    ) {
+      result.textContent =
+        "Please enter a valid salary and savings percentage.";
+      return;
+    }
+
+    const savings = salary * (savingPercentage / 100);
+    const spending = salary - savings;
+
+    result.innerHTML = `
+      You can save <strong>${savings.toFixed(2)}</strong>
+      ${period === "weekly" ? "per week" : "per month"} and spend
+      <strong>${spending.toFixed(2)}</strong>
+      ${period === "weekly" ? "per week" : "per month"}.
+    `;
+  });
