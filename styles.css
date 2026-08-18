@@ -8,7 +8,8 @@ body {
   padding: 40px 20px;
 
   font-family: Arial, Helvetica, sans-serif;
-  color: #435d82;
+  background: #0F172A;
+  color: #34D399;
 
   background: background linear-gradient(135deg, #141e30, #243b55);
 }
