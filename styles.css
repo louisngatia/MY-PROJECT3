@@ -8,10 +8,14 @@ body {
   padding: 40px 20px;
 
   font-family: Arial, Helvetica, sans-serif;
-  background: #0F172A;
-  color: #34D399;
 
-  background: background linear-gradient(135deg, #141e30, #243b55);
+  /* Deep navy background with a vibrant blue glow */
+  background:
+    radial-gradient(circle at top right, rgba(34, 211, 238, 0.18), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(52, 211, 153, 0.12), transparent 35%),
+    linear-gradient(135deg, #020617, #0f172a, #172554);
+
+  color: #e2e8f0;
 }
 
 .container {
@@ -19,150 +23,230 @@ body {
   margin: 0 auto;
 }
 
+/* =========================
+   HEADER
+========================= */
+
 .page-header {
   margin-bottom: 30px;
   text-align: center;
 }
 
 .page-header h1 {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
 
-  color: #312e81;
-  font-size: 2.4rem;
+  color: #ffffff;
+  font-size: 2.6rem;
+  font-weight: 800;
+
+  /* Bright gradient text */
+  background: linear-gradient(90deg, #22d3ee, #34d399);
 }
 
 .intro-text {
   max-width: 700px;
   margin: 0 auto;
 
-  color: #4b5563;
+  color: #cbd5e1;
   font-size: 1rem;
-  line-height: 1.6;
+  line-height: 1.7;
 }
+
+/* =========================
+   PROBLEM TEXT
+========================= */
 
 .problem-text {
   max-width: 700px;
-  margin: 18px auto 0;
-  padding: 15px 18px;
+  margin: 20px auto 0;
+  padding: 16px 20px;
 
-  border-left: 5px solid #f59e0b;
-  border-radius: 8px;
+  border-left: 5px solid #22d3ee;
+  border-radius: 10px;
 
-  background: #e8f1ff;
-  color: #1e3a5f;
-  padding: 15px 20px;
-  border-left: 5px solid #3b82f6;
-  border-radius: 8px;
-
+  background: rgba(14, 165, 233, 0.12);
+  color: #dbeafe;
 
   font-size: 0.95rem;
   line-height: 1.7;
   text-align: left;
+
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
 }
+
+/* =========================
+   CALCULATOR CARDS
+========================= */
 
 .calculator-card {
   margin-bottom: 25px;
   padding: 30px;
 
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.15);
   border-radius: 20px;
 
-  background: rgba(255, 255, 255, 0.94);
-  box-shadow: 0 15px 35px rgba(31, 41, 55, 0.15);
+  background: rgba(255, 255, 255, 0.97);
+
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.25),
+    0 0 30px rgba(34, 211, 238, 0.05);
 }
 
 .calculator-card h2 {
   margin: 0 0 8px;
 
-  color: #312e81;
-  font-size: 1.5rem;
+  color: #0f172a;
+  font-size: 1.55rem;
+  font-weight: 800;
 }
+
+/* =========================
+   SMALL INFORMATION TEXT
+========================= */
 
 .small-text {
   margin: 12px 0 22px;
-  padding: 11px 14px;
+  padding: 12px 15px;
 
-  border-left: 4px solid #4f46e5;
-  border-radius: 7px;
+  border-left: 4px solid #22d3ee;
+  border-radius: 8px;
 
-  background: #eef2ff;
-  color: #4338ca;
+  background: #ecfeff;
+  color: #155e75;
 
   font-size: 0.9rem;
-  font-style: italic;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 
+/* =========================
+   INPUTS
+========================= */
+
 .input-group {
-  margin-bottom: 18px;
+  margin-bottom: 19px;
 }
 
 .input-group label {
   display: block;
   margin-bottom: 7px;
 
-  color: #374151;
+  color: #1e293b;
   font-size: 0.95rem;
-  font-weight: bold;
+  font-weight: 700;
 }
 
 input,
 select {
   width: 100%;
-  padding: 13px 14px;
+  padding: 14px;
 
-  border: 1px solid #c7d2fe;
+  border: 2px solid #cbd5e1;
   border-radius: 10px;
 
   background: #ffffff;
-  color: #1f2937;
+  color: #0f172a;
+
   font-size: 1rem;
+
+  transition: all 0.2s ease;
+}
+
+input:hover,
+select:hover {
+  border-color: #67e8f9;
 }
 
 input:focus,
 select:focus {
-  outline: 3px solid #c4b5fd;
-  border-color: #4f46e5;
+  outline: none;
+
+  border-color: #06b6d4;
+
+  box-shadow: 0 0 0 4px rgba(34, 211, 238, 0.15);
 }
 
+/* Automatically calculated field */
 input[readonly] {
-  background: #f3f4f6;
-  color: #4b5563;
+  background: #f0fdfa;
+  color: #047857;
+
+  border-color: #6ee7b7;
+
+  font-weight: 700;
   cursor: not-allowed;
 }
 
+/* =========================
+   BUTTON
+========================= */
+
 button {
   width: 100%;
-  padding: 14px;
+  padding: 15px;
 
   border: none;
-  border-radius: 10px;
+  border-radius: 11px;
 
-  background: #4f46e5;
+  background: linear-gradient(
+    135deg,
+    #0891b2,
+    #06b6d4,
+    #10b981
+  );
+
   color: #ffffff;
 
   font-size: 1rem;
-  font-weight: bold;
+  font-weight: 800;
+
   cursor: pointer;
 
-  transition: 0.2s ease;
+  box-shadow:
+    0 8px 20px rgba(6, 182, 212, 0.25);
+
+  transition: all 0.25s ease;
 }
 
 button:hover {
-  background: #3730a3;
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+
+  box-shadow:
+    0 12px 28px rgba(6, 182, 212, 0.35);
+
+  background: linear-gradient(
+    135deg,
+    #06b6d4,
+    #10b981
+  );
 }
+
+button:active {
+  transform: translateY(-1px);
+}
+
+/* =========================
+   RESULTS
+========================= */
 
 .result {
   margin-top: 22px;
-  padding: 18px;
+  padding: 19px;
 
+  border: 1px solid #a7f3d0;
   border-radius: 12px;
-  background: #ecfdf5;
+
+  background: linear-gradient(
+    135deg,
+    #ecfdf5,
+    #f0fdfa
+  );
+
   color: #065f46;
 
   font-size: 1rem;
   line-height: 1.7;
+
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.08);
 }
 
 .result strong {
@@ -170,18 +254,32 @@ button:hover {
   font-size: 1.1rem;
 }
 
-.suggestion {
-  margin-top: 12px;
-  padding: 12px;
+/* =========================
+   SUGGESTION
+========================= */
 
-  border-radius: 8px;
-  background: #fef3c7;
+.suggestion {
+  margin-top: 14px;
+  padding: 13px;
+
+  border-left: 4px solid #f59e0b;
+  border-radius: 9px;
+
+  background: #fffbeb;
   color: #92400e;
 }
+
+/* =========================
+   HIDDEN
+========================= */
 
 .hidden {
   display: none;
 }
+
+/* =========================
+   MOBILE
+========================= */
 
 @media (max-width: 600px) {
   body {
@@ -189,10 +287,19 @@ button:hover {
   }
 
   .page-header h1 {
-    font-size: 2rem;
+    font-size: 2.1rem;
+  }
+
+  .intro-text {
+    font-size: 0.95rem;
   }
 
   .calculator-card {
     padding: 22px;
+    border-radius: 16px;
+  }
+
+  .calculator-card h2 {
+    font-size: 1.35rem;
   }
 }
