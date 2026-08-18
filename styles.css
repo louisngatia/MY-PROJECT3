@@ -8,16 +8,27 @@ body {
   padding: 40px 20px;
 
   font-family: Arial, Helvetica, sans-serif;
-
-  /* Deep navy background with a vibrant blue glow */
-  background:
-    radial-gradient(circle at top right, rgba(34, 211, 238, 0.18), transparent 35%),
-    radial-gradient(circle at bottom left, rgba(52, 211, 153, 0.12), transparent 35%),
-    linear-gradient(135deg, purple,black,darkblue);
-
   color: #e2e8f0;
-}
 
+  /* Balanced purple + black + navy */
+  background:
+    radial-gradient(
+      circle at 85% 10%,
+      rgba(168, 85, 247, 0.22),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 10% 90%,
+      rgba(34, 211, 238, 0.12),
+      transparent 30%
+    ),
+    linear-gradient(
+      135deg,
+      #020617 0%,
+      #0f172a 50%,
+      #241044 100%
+    );
+}
 .container {
   width: min(100%, 850px);
   margin: 0 auto;
