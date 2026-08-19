@@ -465,3 +465,29 @@ document.addEventListener("DOMContentLoaded", function () {
     renderGrowthCards();
   });
 });
+
+const startButton = document.getElementById("startButton");
+const homePage = document.getElementById("homePage");
+const mainContent = document.getElementById("mainContent");
+
+startButton.addEventListener("click", function () {
+  homePage.classList.add("hidden");
+  mainContent.classList.remove("hidden");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
+
+const homeButton = document.getElementById("homeButton");
+
+homeButton.addEventListener("click", function () {
+  mainContent.classList.add("hidden");
+  homePage.classList.remove("hidden");
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});
