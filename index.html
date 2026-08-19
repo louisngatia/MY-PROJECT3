@@ -28,100 +28,175 @@
       </p>
     </header>
 
-    <!-- BUDGET PLANNER -->
-    <section class="calculator-card">
-      <h2>Budget Planner</h2>
+    <div class="calculator-grid">
 
-      <p class="small-text">
-        Enter your salary and the percentage you want to save. These values will
-        also be used by the savings calculator.
-      </p>
+      <!-- BUDGET PLANNER -->
+      <section class="calculator-card">
+        <h2>Budget Planner</h2>
 
-      <form id="budgetForm">
-        <div class="input-group">
-          <label for="salary">Salary</label>
+        <p class="small-text">
+          Enter your salary and the percentage you want to save. These values
+          will also be used by the savings calculator.
+        </p>
 
+        <form id="budgetForm">
+          <div class="input-group">
+            <label for="salary">Salary</label>
+
+            <input
+              type="number"
+              id="salary"
+              placeholder="Enter your salary"
+              min="1000"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="salaryPeriod">Salary period</label>
+
+            <select id="salaryPeriod" required>
+              <option value="weekly">Weekly</option>
+              <option value="monthly">Monthly</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="savingPercentage">
+              Savings percentage
+              <span class="tooltip" tabindex="0" data-tip="A common starting point is 20% of income. Adjust based on your own expenses.">?</span>
+            </label>
+
+            <input
+              type="number"
+              id="savingPercentage"
+              placeholder="For example, 20"
+              min="5"
+              max="100"
+              value="20"
+              required
+            >
+          </div>
+
+          <button type="submit">
+            Calculate budget
+          </button>
+        </form>
+
+        <div id="budgetResult" class="result hidden"></div>
+      </section>
+
+      <!-- SAVINGS TARGET CALCULATOR -->
+      <section class="calculator-card">
+        <h2>Savings Target Calculator</h2>
+
+        <p class="small-text">
+          Enter your target. The weekly savings amount will automatically match
+          the amount calculated in the budget planner.
+        </p>
+
+        <form id="savingsForm">
+          <div class="input-group">
+            <label for="savingsTarget">Savings target</label>
+
+            <input
+              type="number"
+              id="savingsTarget"
+              placeholder="For example, 50000"
+              min="100"
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="weeklySavings">Weekly savings</label>
+
+            <input
+              type="number"
+              id="weeklySavings"
+              placeholder="Calculate your budget first"
+              min="100"
+              readonly
+              required
+            >
+          </div>
+
+          <div class="input-group">
+            <label for="interestRate">
+              Annual interest rate (%)
+              <span class="tooltip" tabindex="0" data-tip="If your savings sit in an interest-bearing account, enter the annual rate to see how compounding speeds things up. Leave at 0 to ignore.">?</span>
+            </label>
+
+            <input
+              type="number"
+              id="interestRate"
+              placeholder="For example, 4.5"
+              min="0"
+              max="100"
+              step="0.1"
+              value="0"
+            >
+          </div>
+
+          <div class="input-group checkbox-group">
+            <label for="compoundMonthly">
+              <input type="checkbox" id="compoundMonthly" checked>
+              Compound interest monthly
+            </label>
+          </div>
+
+          <button type="submit">
+            Calculate savings time
+          </button>
+        </form>
+
+        <div id="savingsResult" class="result hidden"></div>
+      </section>
+
+    </div>
+
+    <!-- INVESTMENT PLANS & FINANCIAL SKILLS -->
+     <button type="button" id="growthMainToggle" class="growth-main-toggle">
+  Show Investment Plans & Financial Skills
+</button>
+<section class="growth-panel hidden" id="growthPanel">
+      <div class="growth-panel-header">
+        <h2>Investment Plans & Financial Skills</h2>
+        <p class="small-text">
+          Ideas to grow your money and skills worth building along the way.
+          Educational information only, not personalized financial advice
+          &mdash; consider talking to a licensed financial advisor before
+          making major decisions.
+        </p>
+      </div>
+
+      <div class="growth-controls">
+        <div class="growth-search-wrap">
           <input
-            type="number"
-            id="salary"
-            placeholder="Enter your salary"
-            min="1000"
-            required
+            type="text"
+            id="growthSearch"
+            class="growth-search"
+            placeholder="Search ideas (e.g. debt, index funds, emergency fund)..."
           >
         </div>
 
-        <div class="input-group">
-          <label for="salaryPeriod">Salary period</label>
-
-          <select id="salaryPeriod" required>
-            <option value="weekly">Weekly</option>
-            <option value="monthly">Monthly</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <label for="savingPercentage">Savings percentage</label>
-
-          <input
-            type="number"
-            id="savingPercentage"
-            placeholder="For example, 20"
-            min="5"
-            max="100"
-            value="20"
-            required
-          >
-        </div>
-
-        <button type="submit">
-          Calculate budget
+        <button type="button" id="growthToggleView" class="growth-toggle-btn">
+          Show all ideas
         </button>
-      </form>
+      </div>
 
-      <div id="budgetResult" class="result hidden"></div>
-    </section>
+      <p id="growthStatus" class="growth-status"></p>
 
-    <!-- SAVINGS CALCULATOR -->
-    <section class="calculator-card">
-      <h2>Savings Target Calculator</h2>
+      <div class="growth-cards" id="growthCards">
+        <!-- Cards are rendered by script.js -->
+      </div>
 
-      <p class="small-text">
-        Enter your target. The weekly savings amount will automatically match
-        the amount calculated in the budget planner.
+      <button type="button" id="growthShowMore" class="growth-toggle-btn growth-show-more hidden">
+       Show more ideas</button>
+
+      <p id="growthEmpty" class="growth-empty hidden">
+        No matching ideas found. Try a different search term.
       </p>
-
-      <form id="savingsForm">
-        <div class="input-group">
-          <label for="savingsTarget">Savings target</label>
-
-          <input
-            type="number"
-            id="savingsTarget"
-            placeholder="For example, 50000"
-            min="100"
-            required
-          >
-        </div>
-
-        <div class="input-group">
-          <label for="weeklySavings">Weekly savings</label>
-
-          <input
-            type="number"
-            id="weeklySavings"
-            placeholder="Calculate your budget first"
-            min="100"
-            readonly
-            required
-          >
-        </div>
-
-        <button type="submit">
-          Calculate savings time
-        </button>
-      </form>
-
-      <div id="savingsResult" class="result shown"></div>
     </section>
 
   </main>
