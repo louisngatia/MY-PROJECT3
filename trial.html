@@ -1,0 +1,1143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Build your savings plan with confidence. Calculate budget splits, savings goals, compound interest, visual projections, and explore investment ideas.">
+  <title>Savings Calculator, Budget Planner & Growth Hub</title>
+  
+  <!-- Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    /* ==========================================================================
+       CSS Variables & Reset
+       ========================================================================== */
+    :root {
+      --primary: #0d9488;
+      --primary-hover: #0f766e;
+      --primary-light: #ccfbf1;
+      --primary-dark: #115e59;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-300: #cbd5e1;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --slate-50: #f8fafc;
+      --white: #ffffff;
+      --border-color: #e2e8f0;
+      --card-bg: #ffffff;
+      --input-bg: #f8fafc;
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-xl: 1rem;
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+      --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Dark theme override */
+    body.dark-mode {
+      --slate-900: #f8fafc;
+      --slate-800: #f1f5f9;
+      --slate-700: #cbd5e1;
+      --slate-600: #94a3b8;
+      --slate-500: #64748b;
+      --slate-300: #334155;
+      --slate-200: #1e293b;
+      --slate-100: #0f172a;
+      --slate-50: #0b0f19;
+      --white: #111827;
+      --card-bg: #1e293b;
+      --border-color: #334155;
+      --input-bg: #0f172a;
+      --primary-light: rgba(13, 148, 136, 0.2);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--slate-50);
+      color: var(--slate-800);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      width: 100%;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    /* Top Bar Header */
+    .top-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 1.5rem;
+      background: var(--card-bg);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .brand {
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .btn-icon {
+      background: var(--slate-100);
+      border: 1px solid var(--border-color);
+      color: var(--slate-800);
+      padding: 0.5rem 0.875rem;
+      border-radius: var(--radius-md);
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: var(--transition);
+    }
+
+    .btn-icon:hover {
+      background: var(--slate-200);
+    }
+
+    /* ==========================================================================
+       Home / Landing Hero Section
+       ========================================================================== */
+    .home-page {
+      min-height: 85vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 3rem 1.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      gap: 3rem;
+    }
+
+    @media (max-width: 900px) {
+      .home-page {
+        flex-direction: column-reverse;
+        padding: 2rem 1rem;
+        text-align: center;
+      }
+    }
+
+    .home-content {
+      flex: 1;
+    }
+
+    .eyebrow {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--primary);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 0.75rem;
+    }
+
+    .home-content h1 {
+      font-size: clamp(2.25rem, 5vw, 3.5rem);
+      font-weight: 800;
+      color: var(--slate-900);
+      line-height: 1.15;
+      margin-bottom: 1.25rem;
+    }
+
+    .home-description {
+      font-size: 1.125rem;
+      color: var(--slate-600);
+      margin-bottom: 2rem;
+      max-width: 580px;
+    }
+
+    .home-image-wrap {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .home-image-svg {
+      width: 100%;
+      height: auto;
+      filter: drop-shadow(0 20px 25px rgba(15, 118, 110, 0.15));
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-12px); }
+    }
+
+    /* Buttons */
+    .start-button, .home-button, .growth-main-toggle, .growth-toggle-btn, button[type="submit"] {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      padding: 0.875rem 1.75rem;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+      text-decoration: none;
+    }
+
+    .start-button, button[type="submit"] {
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(13, 148, 136, 0.25);
+    }
+
+    .start-button:hover, button[type="submit"]:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 6px 16px rgba(13, 148, 136, 0.35);
+      transform: translateY(-1px);
+    }
+
+    .home-button {
+      background-color: var(--slate-200);
+      color: var(--slate-800);
+      margin-top: 2rem;
+    }
+
+    .home-button:hover {
+      background-color: var(--slate-300);
+    }
+
+    /* Navigation Tabs */
+    .app-tabs {
+      display: flex;
+      gap: 0.5rem;
+      background: var(--slate-200);
+      padding: 0.35rem;
+      border-radius: var(--radius-lg);
+      margin-bottom: 2rem;
+      overflow-x: auto;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 0.75rem 1.25rem;
+      font-size: 0.95rem;
+      font-weight: 600;
+      border: none;
+      background: transparent;
+      color: var(--slate-600);
+      border-radius: var(--radius-md);
+      cursor: pointer;
+      white-space: nowrap;
+      transition: var(--transition);
+    }
+
+    .tab-btn.active {
+      background: var(--card-bg);
+      color: var(--primary);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Header */
+    .page-header {
+      margin-bottom: 2rem;
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+    }
+
+    .page-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--slate-900);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Grid & Cards */
+    .calculator-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .calculator-card {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .calculator-card h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--slate-900);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Preset Chips */
+    .presets-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .preset-chip {
+      background: var(--slate-100);
+      border: 1px solid var(--border-color);
+      color: var(--slate-700);
+      padding: 0.4rem 0.8rem;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .preset-chip:hover {
+      background: var(--primary-light);
+      border-color: var(--primary);
+      color: var(--primary-dark);
+    }
+
+    /* Inputs */
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+    }
+
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+    }
+
+    .input-group label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--slate-700);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-group input[type="number"],
+    .input-group select,
+    .growth-search {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-family: inherit;
+      font-size: 1rem;
+      color: var(--slate-800);
+      background-color: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      transition: var(--transition);
+      outline: none;
+    }
+
+    .input-group input[type="number"]:focus,
+    .input-group select:focus,
+    .growth-search:focus {
+      border-color: var(--primary);
+      background-color: var(--card-bg);
+      box-shadow: 0 0 0 3px var(--primary-light);
+    }
+
+    /* Slider styling */
+    .slider-group {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--slate-100);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+    }
+
+    .slider-group label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 0.4rem;
+    }
+
+    .slider-group input[type="range"] {
+      width: 100%;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    /* Results */
+    .result {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      background-color: var(--slate-100);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary);
+    }
+
+    .result h3 {
+      font-size: 1.1rem;
+      color: var(--slate-900);
+      margin-bottom: 0.75rem;
+    }
+
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.4rem 0;
+      border-bottom: 1px dashed var(--border-color);
+      font-size: 0.95rem;
+    }
+
+    .result-item:last-child {
+      border-bottom: none;
+    }
+
+    .result-item span.highlight {
+      font-weight: 700;
+      color: var(--slate-900);
+    }
+
+    .result-highlight-box {
+      margin-top: 0.75rem;
+      padding: 0.75rem;
+      background: var(--primary-light);
+      border-radius: var(--radius-md);
+      color: var(--primary-dark);
+      font-weight: 600;
+      text-align: center;
+    }
+
+    /* Chart Containers */
+    .chart-box {
+      position: relative;
+      width: 100%;
+      min-height: 280px;
+      margin-top: 1rem;
+    }
+
+    /* Growth Panel Cards */
+    .growth-panel {
+      background: var(--card-bg);
+      border-radius: var(--radius-xl);
+      padding: 2rem;
+      box-shadow: var(--shadow-md);
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+
+    .growth-controls {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+    }
+
+    .growth-search-wrap {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .growth-toggle-btn {
+      background-color: var(--slate-100);
+      color: var(--slate-700);
+      border: 1px solid var(--border-color);
+      padding: 0.75rem 1.25rem;
+      font-size: 0.9rem;
+    }
+
+    .growth-toggle-btn:hover {
+      background-color: var(--slate-200);
+    }
+
+    .growth-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .growth-card {
+      background: var(--slate-50);
+      border-radius: var(--radius-lg);
+      padding: 1.25rem;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .growth-card-badge {
+      align-self: flex-start;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 0.75rem;
+      background: var(--primary-light);
+      color: var(--primary-dark);
+    }
+
+    /* Report Modal */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      padding: 1.5rem;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      padding: 2.5rem;
+      border-radius: var(--radius-xl);
+      max-width: 650px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: var(--shadow-xl);
+      border: 1px solid var(--border-color);
+    }
+
+    @media print {
+      body * { visibility: hidden; }
+      #modalReportContent, #modalReportContent * { visibility: visible; }
+      #modalReportContent { position: absolute; left: 0; top: 0; width: 100%; }
+      .modal-overlay { background: white; position: static; }
+      .no-print { display: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <nav class="top-nav">
+    <div class="brand">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      SmartPlanner
+    </div>
+    <div class="nav-actions">
+      <button type="button" class="btn-icon" id="themeToggleBtn">
+        🌙 Theme
+      </button>
+      <button type="button" class="btn-icon" id="openReportBtn">
+        📄 Summary Report
+      </button>
+    </div>
+  </nav>
+
+  <!-- Home page / Hero Section -->
+  <section class="home-page" id="homePage">
+    <div class="home-content">
+      <p class="eyebrow">SMART MONEY PLANNING</p>
+      <h1>Build your savings plan with confidence</h1>
+      <p class="home-description">
+        Set a goal, visualize compound growth, structure your 50/30/20 budget, and
+        discover practical financial strategies tailored for your growth.
+      </p>
+
+      <button type="button" id="startButton" class="start-button">
+        Start planning
+      </button>
+    </div>
+
+    <div class="home-image-wrap">
+      <svg class="home-image-svg" viewBox="0 0 500 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="250" cy="200" r="180" fill="#CCFBF1" opacity="0.6"/>
+        <rect x="120" y="240" width="40" height="90" rx="8" fill="#0D9488" opacity="0.4"/>
+        <rect x="180" y="190" width="40" height="140" rx="8" fill="#0D9488" opacity="0.6"/>
+        <rect x="240" y="150" width="40" height="180" rx="8" fill="#0D9488" opacity="0.8"/>
+        <rect x="300" y="100" width="40" height="230" rx="8" fill="#0D9488"/>
+        <path d="M100 230 L180 180 L240 140 L340 70" stroke="#10B981" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="340" cy="70" r="10" fill="#10B981"/>
+        <circle cx="250" cy="80" r="30" fill="#F8FAFC" stroke="#0D9488" stroke-width="4"/>
+        <text x="250" y="88" font-family="Inter, sans-serif" font-weight="bold" font-size="20" fill="#0D9488" text-anchor="middle">KSh</text>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="container hidden" id="mainContent">
+
+    <!-- View Tabs -->
+    <div class="app-tabs">
+      <button class="tab-btn active" data-tab="calculators">Calculators & Visuals</button>
+      <button class="tab-btn" data-tab="budget">50/30/20 Budget Breakdown</button>
+      <button class="tab-btn" data-tab="growth">Investment & Skills Hub</button>
+    </div>
+
+    <!-- CALCULATORS TAB -->
+    <div id="tab-calculators" class="tab-page">
+      <header class="page-header">
+        <h1>Savings Target & Compound Projection</h1>
+        <p class="intro-text">
+          Select a localized preset goal or enter your custom target to visually compare simple savings against compound growth over time.
+        </p>
+      </header>
+
+      <div class="calculator-grid">
+
+        <!-- BUDGET PLANNER FORM -->
+        <section class="calculator-card">
+          <h2>1. Income & Budgeting</h2>
+          <p class="small-text">Configure your income to feed into your savings strategy.</p>
+
+          <form id="budgetForm">
+            <div class="input-group">
+              <label for="salary">Income (KSh)</label>
+              <input type="number" id="salary" placeholder="e.g. 80000" value="80000" min="1" step="any" required>
+            </div>
+
+            <div class="input-group">
+              <label for="salaryPeriod">Salary Period</label>
+              <select id="salaryPeriod" required>
+                <option value="weekly">Weekly</option>
+                <option value="monthly" selected>Monthly</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="savingPercentage">Savings Percentage (%)</label>
+              <input type="number" id="savingPercentage" min="1" max="100" value="20" required>
+            </div>
+
+            <button type="submit">Calculate Budget</button>
+          </form>
+
+          <div id="budgetResult" class="result hidden"></div>
+
+          <!-- 50/30/20 Mini Doughnut Chart -->
+          <div class="chart-box">
+            <canvas id="budgetChart"></canvas>
+          </div>
+        </section>
+
+        <!-- SAVINGS & COMPOUND CALCULATOR -->
+        <section class="calculator-card">
+          <h2>2. Savings Target Goal</h2>
+          
+          <!-- Preset Chips -->
+          <p class="small-text">Quick Presets (KSh):</p>
+          <div class="presets-container">
+            <button type="button" class="preset-chip" data-target="150000" data-rate="8.0">🛡️ Emergency Fund (KSh 150k)</button>
+            <button type="button" class="preset-chip" data-target="800000" data-rate="10.0">🏗️ Buy Plot / Land (KSh 800k)</button>
+            <button type="button" class="preset-chip" data-target="75000" data-rate="5.0">💻 New Laptop (KSh 75k)</button>
+            <button type="button" class="preset-chip" data-target="60000" data-rate="4.0">🏖️ Holiday in Diani (KSh 60k)</button>
+            <button type="button" class="preset-chip" data-target="1500000" data-rate="10.0">🚗 Car Purchase (KSh 1.5M)</button>
+          </div>
+
+          <form id="savingsForm">
+            <div class="input-group">
+              <label for="savingsTarget">Target Amount (KSh)</label>
+              <input type="number" id="savingsTarget" placeholder="e.g. 500000" value="500000" min="1" step="any" required>
+            </div>
+
+            <div class="input-group">
+              <label for="weeklySavings">Weekly Contribution (KSh)</label>
+              <input type="number" id="weeklySavings" min="0.01" step="any" required>
+            </div>
+
+            <div class="input-group">
+              <label for="interestRate">Annual Interest Rate (%)</label>
+              <input type="number" id="interestRate" step="0.1" value="8.0" min="0" max="100">
+            </div>
+
+            <!-- "What-If" Sliders -->
+            <div class="slider-group">
+              <label for="extraMonthlySlider">
+                <span>Extra Monthly Contribution:</span>
+                <span id="extraMonthlyVal">KSh 0</span>
+              </label>
+              <input type="range" id="extraMonthlySlider" min="0" max="50000" step="500" value="0">
+
+              <label for="rateSlider" style="margin-top:0.75rem;">
+                <span>Interest Rate Scenario:</span>
+                <span id="rateSliderVal">8.0%</span>
+              </label>
+              <input type="range" id="rateSlider" min="0" max="20" step="0.5" value="8">
+            </div>
+
+            <button type="submit">Calculate Projection</button>
+          </form>
+
+          <div id="savingsResult" class="result hidden"></div>
+        </section>
+
+      </div>
+
+      <!-- VISUAL COMPOUND GRAPH CARD -->
+      <section class="calculator-card">
+        <h2>Growth Projection: Cash vs Compound Interest</h2>
+        <p class="small-text">Compare simple cash savings against invested compound interest performance.</p>
+        <div class="chart-box" style="min-height: 350px;">
+          <canvas id="growthChart"></canvas>
+        </div>
+      </section>
+    </div>
+
+    <!-- 50/30/20 BUDGET TAB -->
+    <div id="tab-budget" class="tab-page hidden">
+      <header class="page-header">
+        <h1>Detailed 50/30/20 Budget Allocation</h1>
+        <p class="intro-text">
+          The 50/30/20 framework splits net income into Needs (50%), Wants (30%), and Financial Goals/Savings (20%).
+        </p>
+      </header>
+
+      <div class="calculator-grid" id="budgetBreakdownCards">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <!-- INVESTMENT & SKILLS HUB TAB -->
+    <div id="tab-growth" class="tab-page hidden">
+      <section class="growth-panel">
+        <div class="growth-panel-header">
+          <h2>Investment Plans & Financial Skills</h2>
+          <p class="small-text">
+            Explore strategies like Money Market Funds (MMF), SACCCOs, debt management, and compound savings. Educational content only.
+          </p>
+        </div>
+
+        <div class="growth-controls">
+          <div class="growth-search-wrap">
+            <input type="text" id="growthSearch" class="growth-search" placeholder="Search ideas (e.g. MMF, SACCO, debt)...">
+          </div>
+          <button type="button" id="growthToggleView" class="growth-toggle-btn">Show all ideas</button>
+        </div>
+
+        <p id="growthStatus" class="growth-status" style="margin-bottom:1rem; font-size:0.875rem; color:var(--slate-500);"></p>
+
+        <div class="growth-cards" id="growthCards"></div>
+      </section>
+    </div>
+
+    <button type="button" id="homeButton" class="home-button">
+      &larr; Back to home
+    </button>
+  </main>
+
+  <!-- Report Modal -->
+  <div id="reportModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div id="modalReportContent">
+        <h2 style="color:var(--primary); margin-bottom:0.5rem;">Financial Summary Report</h2>
+        <p style="font-size:0.85rem; color:var(--slate-500); margin-bottom:1.5rem;">Generated by SmartPlanner</p>
+        <div id="reportDetails"></div>
+      </div>
+      <div class="no-print" style="margin-top:1.5rem; display:flex; justify-content:flex-end; gap:0.75rem;">
+        <button type="button" class="btn-icon" onclick="window.print()">🖨️ Print / Save PDF</button>
+        <button type="button" class="btn-icon" id="closeReportBtn">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Data Cards
+      const growthIdeas = [
+        { id: 1, category: 'Account', title: 'Money Market Fund (MMF)', description: 'A low-risk liquid investment channel offering competitive compound yields on daily balances in Kenya.' },
+        { id: 2, category: 'Strategy', title: 'SACCO Savings & Dividends', description: 'Save consistently with SACCOs to access affordable development loans and enjoy annual dividend payouts.' },
+        { id: 3, category: 'Strategy', title: 'Emergency Fund', description: 'Build 3-6 months of essential living expenses (e.g., KSh 150,000+) in a liquid MMF or HYSA before aggressive investing.' },
+        { id: 4, category: 'Strategy', title: 'Debt Avalanche vs. Snowball', description: 'Clear high-interest loans (like mobile loans) first to minimize finance charges.' },
+        { id: 5, category: 'Automation', title: 'Automated M-Pesa / Bank Transfers', description: 'Schedule recurring standing orders into savings on payday to reliably "pay yourself first".' },
+        { id: 6, category: 'Skill', title: '50/30/20 Budgeting Rule', description: 'Allocate 50% Needs, 30% Wants, and 20% Savings for balanced financial health.' }
+      ];
+
+      // Charts setup variables
+      let budgetDoughnutChart = null;
+      let compoundLineChart = null;
+
+      // Selectors
+      const homePage = document.getElementById('homePage');
+      const mainContent = document.getElementById('mainContent');
+      const startButton = document.getElementById('startButton');
+      const homeButton = document.getElementById('homeButton');
+      const themeToggleBtn = document.getElementById('themeToggleBtn');
+
+      // Forms
+      const budgetForm = document.getElementById('budgetForm');
+      const salaryInput = document.getElementById('salary');
+      const salaryPeriodSelect = document.getElementById('salaryPeriod');
+      const savingPercentageInput = document.getElementById('savingPercentage');
+      const budgetResult = document.getElementById('budgetResult');
+
+      const savingsForm = document.getElementById('savingsForm');
+      const savingsTargetInput = document.getElementById('savingsTarget');
+      const weeklySavingsInput = document.getElementById('weeklySavings');
+      const interestRateInput = document.getElementById('interestRate');
+      const savingsResult = document.getElementById('savingsResult');
+
+      // Sliders
+      const extraMonthlySlider = document.getElementById('extraMonthlySlider');
+      const extraMonthlyVal = document.getElementById('extraMonthlyVal');
+      const rateSlider = document.getElementById('rateSlider');
+      const rateSliderVal = document.getElementById('rateSliderVal');
+
+      // Growth Cards
+      const growthSearch = document.getElementById('growthSearch');
+      const growthToggleView = document.getElementById('growthToggleView');
+      const growthCardsContainer = document.getElementById('growthCards');
+      const growthStatus = document.getElementById('growthStatus');
+
+      // Modal
+      const reportModal = document.getElementById('reportModal');
+      const openReportBtn = document.getElementById('openReportBtn');
+      const closeReportBtn = document.getElementById('closeReportBtn');
+
+      let isShowingAllIdeas = false;
+
+      // Currency Formatter - KSh / KES
+      const formatCurrency = amount => 'KSh ' + Math.round(amount).toLocaleString('en-KE');
+
+      // --- Navigation & Views ---
+      startButton.addEventListener('click', () => {
+        homePage.classList.add('hidden');
+        mainContent.classList.remove('hidden');
+        loadSavedData();
+        initCharts();
+        // Trigger default initial calculation
+        budgetForm.dispatchEvent(new Event('submit'));
+      });
+
+      homeButton.addEventListener('click', () => {
+        mainContent.classList.add('hidden');
+        homePage.classList.remove('hidden');
+      });
+
+      // Tabs Switcher
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-page').forEach(p => p.classList.add('hidden'));
+          btn.classList.add('active');
+          document.getElementById(`tab-${btn.dataset.tab}`).classList.remove('hidden');
+          if (btn.dataset.tab === 'growth') renderGrowthCards();
+          if (btn.dataset.tab === 'budget') renderBudgetBreakdownPage();
+        });
+      });
+
+      // Theme Toggle
+      themeToggleBtn.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        localStorage.setItem('theme', document.body.classList.contains('dark-mode') ? 'dark' : 'light');
+      });
+      if (localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-mode');
+
+      // --- Preset Chips ---
+      document.querySelectorAll('.preset-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+          savingsTargetInput.value = chip.dataset.target;
+          interestRateInput.value = chip.dataset.rate;
+          rateSlider.value = chip.dataset.rate;
+          rateSliderVal.textContent = `${chip.dataset.rate}%`;
+          savingsForm.dispatchEvent(new Event('submit'));
+        });
+      });
+
+      // --- Sliders Listener ---
+      extraMonthlySlider.addEventListener('input', (e) => {
+        extraMonthlyVal.textContent = formatCurrency(e.target.value);
+        savingsForm.dispatchEvent(new Event('submit'));
+      });
+
+      rateSlider.addEventListener('input', (e) => {
+        rateSliderVal.textContent = `${e.target.value}%`;
+        interestRateInput.value = e.target.value;
+        savingsForm.dispatchEvent(new Event('submit'));
+      });
+
+      // --- LocalStorage Logic ---
+      function saveData() {
+        const payload = {
+          salary: salaryInput.value,
+          period: salaryPeriodSelect.value,
+          percentage: savingPercentageInput.value,
+          target: savingsTargetInput.value,
+          weeklySavings: weeklySavingsInput.value,
+          interestRate: interestRateInput.value
+        };
+        localStorage.setItem('smart_planner_data_kes', JSON.stringify(payload));
+      }
+
+      function loadSavedData() {
+        const saved = localStorage.getItem('smart_planner_data_kes');
+        if (!saved) return;
+        const data = JSON.parse(saved);
+        if (data.salary) salaryInput.value = data.salary;
+        if (data.period) salaryPeriodSelect.value = data.period;
+        if (data.percentage) savingPercentageInput.value = data.percentage;
+        if (data.target) savingsTargetInput.value = data.target;
+        if (data.weeklySavings) weeklySavingsInput.value = data.weeklySavings;
+        if (data.interestRate) {
+          interestRateInput.value = data.interestRate;
+          rateSlider.value = data.interestRate;
+          rateSliderVal.textContent = `${data.interestRate}%`;
+        }
+      }
+
+      // --- Charts Initialization ---
+      function initCharts() {
+        const ctxDoughnut = document.getElementById('budgetChart').getContext('2d');
+        budgetDoughnutChart = new Chart(ctxDoughnut, {
+          type: 'doughnut',
+          data: {
+            labels: ['Needs (50%)', 'Wants (30%)', 'Savings (20%)'],
+            datasets: [{
+              data: [50, 30, 20],
+              backgroundColor: ['#334155', '#cbd5e1', '#0d9488']
+            }]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return ` ${context.label}: ${formatCurrency(context.raw)}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+
+        const ctxLine = document.getElementById('growthChart').getContext('2d');
+        compoundLineChart = new Chart(ctxLine, {
+          type: 'line',
+          data: {
+            labels: [],
+            datasets: [
+              { label: 'Simple Cash Savings', data: [], borderColor: '#64748b', fill: false },
+              { label: 'Compound Growth', data: [], borderColor: '#0d9488', backgroundColor: 'rgba(13, 148, 136, 0.1)', fill: true }
+            ]
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              tooltip: {
+                callbacks: {
+                  label: function(context) {
+                    return ` ${context.dataset.label}: ${formatCurrency(context.raw)}`;
+                  }
+                }
+              }
+            }
+          }
+        });
+      }
+
+      // --- Budget Form Logic ---
+      budgetForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const salary = parseFloat(salaryInput.value);
+        const period = salaryPeriodSelect.value;
+        const percentage = parseFloat(savingPercentageInput.value);
+
+        if (isNaN(salary) || salary <= 0) return;
+
+        const weeklySalary = period === 'weekly' ? salary : (salary * 12) / 52;
+        const monthlySalary = period === 'monthly' ? salary : (salary * 52) / 12;
+
+        const weeklySavingsAmount = weeklySalary * (percentage / 100);
+        weeklySavingsInput.value = weeklySavingsAmount.toFixed(0);
+
+        budgetResult.innerHTML = `
+          <h3>Budget Summary</h3>
+          <div class="result-item"><span>Weekly Savings Goal:</span><span class="highlight">${formatCurrency(weeklySavingsAmount)}</span></div>
+          <div class="result-item"><span>Monthly Income:</span><span class="highlight">${formatCurrency(monthlySalary)}</span></div>
+        `;
+        budgetResult.classList.remove('hidden');
+
+        // Update Doughnut Chart
+        if (budgetDoughnutChart) {
+          const needs = monthlySalary * 0.5;
+          const wants = monthlySalary * 0.3;
+          const savings = monthlySalary * (percentage / 100);
+          budgetDoughnutChart.data.datasets[0].data = [needs, wants, savings];
+          budgetDoughnutChart.update();
+        }
+
+        saveData();
+        savingsForm.dispatchEvent(new Event('submit'));
+      });
+
+      // --- Savings & Compound Form Logic ---
+      savingsForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const target = parseFloat(savingsTargetInput.value);
+        const weeklyDeposit = parseFloat(weeklySavingsInput.value);
+        const annualRate = parseFloat(interestRateInput.value) || 0;
+        const extraMonthly = parseFloat(extraMonthlySlider.value) || 0;
+
+        if (isNaN(target) || target <= 0 || isNaN(weeklyDeposit)) return;
+
+        const monthlyDeposit = ((weeklyDeposit * 52) / 12) + extraMonthly;
+        const r = annualRate / 100 / 12;
+
+        let months = 0;
+        let cashBalance = 0;
+        let compoundBalance = 0;
+
+        const labels = [0];
+        const cashData = [0];
+        const compoundData = [0];
+
+        while (compoundBalance < target && months < 360) {
+          months++;
+          cashBalance += monthlyDeposit;
+          compoundBalance = (compoundBalance + monthlyDeposit) * (1 + r);
+
+          if (months % 6 === 0 || compoundBalance >= target) {
+            labels.push(`Month ${months}`);
+            cashData.push(Math.round(cashBalance));
+            compoundData.push(Math.round(compoundBalance));
+          }
+        }
+
+        const interestEarned = Math.max(0, compoundBalance - cashBalance);
+
+        savingsResult.innerHTML = `
+          <h3>Goal Timeline Summary</h3>
+          <div class="result-item"><span>Estimated Time:</span><span class="highlight">${months} Months (${(months/12).toFixed(1)} Yrs)</span></div>
+          <div class="result-item"><span>Total Out-of-Pocket:</span><span class="highlight">${formatCurrency(cashBalance)}</span></div>
+          <div class="result-item"><span>Interest Growth Earned:</span><span class="highlight" style="color:var(--accent);">${formatCurrency(interestEarned)}</span></div>
+        `;
+        savingsResult.classList.remove('hidden');
+
+        // Update Compound Graph
+        if (compoundLineChart) {
+          compoundLineChart.data.labels = labels;
+          compoundLineChart.data.datasets[0].data = cashData;
+          compoundLineChart.data.datasets[1].data = compoundData;
+          compoundLineChart.update();
+        }
+
+        saveData();
+      });
+
+      // --- 50/30/20 Budget Page Render ---
+      function renderBudgetBreakdownPage() {
+        const container = document.getElementById('budgetBreakdownCards');
+        const salary = parseFloat(salaryInput.value) || 0;
+        const period = salaryPeriodSelect.value;
+        const monthlySalary = period === 'monthly' ? salary : (salary * 52) / 12;
+
+        container.innerHTML = `
+          <div class="calculator-card">
+            <h2>🏠 Needs (50%)</h2>
+            <p class="small-text">Essential living expenses (Rent, groceries, utilities, school fees).</p>
+            <h3 style="font-size:1.8rem; color:var(--primary); margin-top:1rem;">${formatCurrency(monthlySalary * 0.5)} / mo</h3>
+          </div>
+          <div class="calculator-card">
+            <h2>🎉 Wants (30%)</h2>
+            <p class="small-text">Lifestyle, dining out, entertainment, hobbies.</p>
+            <h3 style="font-size:1.8rem; color:var(--slate-700); margin-top:1rem;">${formatCurrency(monthlySalary * 0.3)} / mo</h3>
+          </div>
+          <div class="calculator-card">
+            <h2>📈 Savings & Goals (20%)</h2>
+            <p class="small-text">Emergency fund, SACCO deposits, MMF investments.</p>
+            <h3 style="font-size:1.8rem; color:var(--accent); margin-top:1rem;">${formatCurrency(monthlySalary * 0.2)} / mo</h3>
+          </div>
+        `;
+      }
+
+      // --- Growth Cards Filtering ---
+      function renderGrowthCards() {
+        const term = growthSearch.value.toLowerCase().trim();
+        const filtered = growthIdeas.filter(i => i.title.toLowerCase().includes(term) || i.category.toLowerCase().includes(term) || i.description.toLowerCase().includes(term));
+        const items = isShowingAllIdeas ? filtered : filtered.slice(0, 4);
+
+        growthCardsContainer.innerHTML = '';
+        items.forEach(idea => {
+          const card = document.createElement('div');
+          card.className = 'growth-card';
+          card.innerHTML = `<span class="growth-card-badge">${idea.category}</span><h3>${idea.title}</h3><p>${idea.description}</p>`;
+          growthCardsContainer.appendChild(card);
+        });
+
+        growthStatus.textContent = `Showing ${items.length} of ${filtered.length} strategies`;
+      }
+
+      growthSearch.addEventListener('input', renderGrowthCards);
+      growthToggleView.addEventListener('click', () => {
+        isShowingAllIdeas = !isShowingAllIdeas;
+        growthToggleView.textContent = isShowingAllIdeas ? 'Show top ideas' : 'Show all ideas';
+        renderGrowthCards();
+      });
+
+      // --- Summary Report Modal ---
+      openReportBtn.addEventListener('click', () => {
+        const salary = parseFloat(salaryInput.value) || 0;
+        const target = parseFloat(savingsTargetInput.value) || 0;
+        const rate = interestRateInput.value || '0';
+
+        document.getElementById('reportDetails').innerHTML = `
+          <div class="result-item"><span>Monthly Base Income:</span><span class="highlight">${formatCurrency(salary)}</span></div>
+          <div class="result-item"><span>Savings Target Goal:</span><span class="highlight">${formatCurrency(target)}</span></div>
+          <div class="result-item"><span>Target Interest Rate:</span><span class="highlight">${rate}%</span></div>
+          <div class="result-item"><span>Extra Monthly Scenario:</span><span class="highlight">${formatCurrency(extraMonthlySlider.value)}/mo</span></div>
+        `;
+        reportModal.classList.remove('hidden');
+      });
+
+      closeReportBtn.addEventListener('click', () => reportModal.classList.add('hidden'));
+    });
+  </script>
+</body>
+</html>
